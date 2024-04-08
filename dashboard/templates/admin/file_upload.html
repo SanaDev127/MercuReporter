@@ -1,0 +1,9 @@
+{% extends "_base.html" %}
+{% block title %}Upload transaction file{% endblock %}
+{% block content %}
+    <form action="{% url 'transaction_upload' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><input type="submit" value="upload"/></p>
+    </form>
+{% endblock %}

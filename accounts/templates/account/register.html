@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block title %}Create an account{% endblock %}
+
+{% block content %}
+  <h1>Create a MercuReporter account</h1>
+  <p>Sign up using the following form:</p>
+  <P>Enter your personal details and select the type of account you wish to create</P>
+  <form method="post">
+    {{ user_form.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" value="Create Account"></p>
+  </form>
+{% endblock %}

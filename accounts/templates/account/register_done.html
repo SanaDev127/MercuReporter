@@ -1,0 +1,11 @@
+{% extends "_base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+    <h1>Welcome to MercuReporter {{ new_user.username }}!</h1>
+    <p>
+        You have successfully created a {{ user.groups.get }} account.
+        Now you can <a href="{% url 'login' %}">log in</a>.
+    </p>
+{% endblock %}
