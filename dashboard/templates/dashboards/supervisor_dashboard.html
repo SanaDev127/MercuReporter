@@ -1,6 +1,47 @@
 {% extends "_base.html" %}
-{% block title %}Supervisor Dashboard{% endblock %}
+{% load static %}
+{% block title %}Supervisor Dashboard{% endblock title %}
+
 {% block content %}
- <h1>Dashboard</h1>
- <p>Welcome to your dashboard. Here you can view stats about vehicles you manage</p>
-{% endblock %}
+<div class="container">
+  <div class=" row">
+    <div class="col col-sm-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <p class="fs-2">Supervisor Utilities</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">View Messages</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Traffic Fine Management</a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="#">Driver Management</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="col">
+      Graph of fleet activity over time
+    </div>
+    <div class="col">
+      Card showing Supervisor details
+    </div>
+  </div>
+    <div class="row">
+        <div class="col col-sm-5">
+            Graph of expenditure
+        </div>
+        <div class="col">
+            <p>Summary Fleet Stats (For current month?):</P>
+            <p>Latest transaction</P>
+            <p>Highest spending vehicle and amount spent</P>
+            <p>Vehicle with most number of transactions</P>
+            <p>Growth rate of spending and transaction number from previous month</P>
+            <p>Next update date</P>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

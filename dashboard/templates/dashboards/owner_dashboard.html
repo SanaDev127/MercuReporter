@@ -1,6 +1,41 @@
 {% extends "_base.html" %}
-{% block title %}Owner Dashboard{% endblock %}
+{% load static %}
+{% block title %}Owner Dashboard{% endblock title %}
+
 {% block content %}
- <h1>Dashboard</h1>
- <p>Welcome to your dashboard. Here you can view stats about your fleet</p>
-{% endblock %}
+<div class="container">
+  <div class=" row">
+    <div class="col col-sm-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <p class="fs-2">Fleet Owner Utilities</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">View Messages</a>
+            </li>
+
+
+        </ul>
+    </div>
+    <div class="col">
+      Graph of activity over time
+    </div>
+    <div class="col">
+      Card showing owner details
+    </div>
+  </div>
+    <div class="row">
+        <div class="col col-sm-5">
+            Graph of expenditure
+        </div>
+        <div class="col">
+            <p>Owner summary stats (For current month? Maybe to date?)</p>
+            <p>Most active fleet</p>
+            <p>Total Spent across fleets</p>
+            <p>Average Daily expenditure</p>
+
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

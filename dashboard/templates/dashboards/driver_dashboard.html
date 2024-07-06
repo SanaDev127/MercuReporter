@@ -1,6 +1,46 @@
 {% extends "_base.html" %}
-{% block title %}Driver Dashboard{% endblock %}
+{% load static %}
+{% block title %}Driver Dashboard{% endblock title %}
+
 {% block content %}
- <h1>Dashboard</h1>
- <p>Welcome to your dashboard. Here you can view stats about your vehicle</p>
-{% endblock %}
+<div class="container">
+  <div class=" row">
+    <div class="col col-sm-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <p class="fs-2">Driver Utilities</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">View Messages</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Log Vehicle Fault</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Traffic Fine Management</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="col">
+      Graph of activity over time
+    </div>
+    <div class="col">
+      Card showing driver details
+    </div>
+  </div>
+    <div class="row">
+        <div class="col col-sm-5">
+            Graph of expenditure
+        </div>
+        <div class="col">
+            <p>Driver summary stats (For current month? Maybe to date?)</p>
+            <p>Last transaction date</p>
+            <p>Distance travelled and amount spent</p>
+            <p>Most frequented station</p>
+
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

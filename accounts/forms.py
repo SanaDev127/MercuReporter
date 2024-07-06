@@ -46,4 +46,15 @@ class CustomUserChangeForm(UserChangeForm):
             "email",
             "username",
         )
+
+
+class SupervisorCreationForm(forms.Form):
+    pass
+
+
+class DriverCreationForm(forms.Form):
+    pass
+
+
+
         

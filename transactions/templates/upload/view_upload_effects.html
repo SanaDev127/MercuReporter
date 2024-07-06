@@ -1,0 +1,99 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Preview Upload Effects{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center">
+         <h3>Preview Upload Effects</h3>
+         <hr/>
+    </div>
+</div>
+
+<div class="row">
+        <div class="col col-sm-2 text-center">
+            <a class="btn btn-info" href="{% url 'transaction_dashboards' %}"><b>Cancel</b></a>
+        </div>
+        <div class="col text-center">
+            <h4><i>Effect that new upload will have on fleet</i></h4>
+        </div>
+        <div class="col col-sm-2 text-center">
+             <a class="btn btn-success" href="{% url 'save_upload' %}"><b>Upload</b></a>
+        </div>
+    </div>
+     <div>
+         <table class="table">
+             <thead>
+                <tr>
+                    <th>
+                        Registration Number
+                    </th>
+                    <th>
+                        Previous Distance Travelled (km)
+                    </th>
+                    <th>
+                        Distance to be added (km)
+                    </th>
+                    <th>
+                        New Distance Travelled (km)
+                    </th>
+                    <th>
+                        Previous Amount Poured (L)
+                    </th>
+                    <th>
+                        Amount to be added (L)
+                    </th>
+                     <th>
+                        New Amount Poured (L)
+                    </th>
+                     <th>
+                        Previous Amount Spent (R)
+                    </th>
+                    <th>
+                        Amount to be added (R)
+                    </th>
+                    <th>
+                        New Amount Spent (R)
+                    </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>
+                            {{ result.vehicle_reg_no }}
+                        </td>
+                        <td>
+                            {{ result.previous_distance_travelled }}
+                        </td>
+                        <td>
+                            {{ result.distance_travelled }}
+                        </td>
+                        <td>
+                            {{ result.new_distance_travelled }}
+                        </td>
+                        <td>
+                            {{ result.previous_amount_poured }}
+                        </td>
+                        <td>
+                            {{ result.amount_poured }}
+                        </td>
+                         <td>
+                            {{ result.new_amount_poured }}
+                        </td>
+                         <td>
+                            {{ result.previous_amount_spent }}
+                        </td>
+                        <td>
+                            {{ result.amount_spent }}
+                        </td>
+                        <td>
+                            {{ result.new_amount_spent }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+{% endblock content %}

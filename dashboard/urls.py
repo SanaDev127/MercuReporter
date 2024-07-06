@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import HomePageView, driver_dashboard, owner_dashboard, supervisor_dashboard, upload_transaction_file
+from .views import *
 
 urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
-    path("drivers/", driver_dashboard, name='driver_dashboard'),
-    path("owners/", owner_dashboard, name='owner_dashboard'),
-    path("supervisors/", supervisor_dashboard, name='supervisor_dashboard'),
-    path("transaction_upload/", upload_transaction_file, name='transaction_upload'),
+    path("users/", user_dashboard, name='user_dashboards'),
+    path("transactions/", transaction_dashboard, name='transaction_dashboards'),
+    path("analytics/", analytics_dash, name='analytics_dashboards'),
+    path("fleet/", fleet_dash, name='fleet_dashboards'),
+    path("vehicle/", vehicle_dash, name='vehicle_dashboard'),
 ]

@@ -1,0 +1,39 @@
+{% extends "_base.html" %}
+
+{% block title %}Owner Fleets{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+  <div class=" row">
+    <div class="col col-sm-4">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <p class="fs-2">Fleet Activities</p>
+            </li>
+            <li class="nav-item">
+                <div class="card">
+                    <div class="card-header">
+                        Add a Fleet
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Click here to create a new vehicle fleet</h5>
+                        <a class="btn btn-secondary">Create</a>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="col">
+      Scrollable & selectable list of created fleets
+    </div>
+    <div class="col col-sm-3">
+      <p>Fleet Summary stats for current month</p>
+      <p>Number of transactions this month per fleet</p>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

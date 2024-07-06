@@ -1,0 +1,78 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Supervisor Transaction Dashboard{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class=" row">
+    <div class="col col-sm-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <p class="fs-2">Fuel Transactions</p>
+            </li>
+            <li class="nav-item">
+               <div class="card">
+                    <div class="card-header">
+                        Transaction File Upload
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Select a file to upload</h5>
+                        <p class="card-text">New transactions will be read and saved to the system.</p>
+                        <form action="{% url 'transaction_upload' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ upload_transaction_file_form.as_p }}
+                            <p><input type="submit" class="btn btn-secondary" value="upload"/></p>
+                        </form>
+                    </div>
+                </div>
+            </li>
+            <br/>
+            <li class="nav-item">
+                <div class="card">
+                    <div class="card-header">
+                        Scan Fuel Receipt
+                    </div>
+                    <div class="card-body">
+                         <h5 class="card-title">Select an image of a fuel receipt</h5>
+                         <p class="card-text">Transaction Data will be scanned and uploaded</p>
+                         <form action="{% url 'scan_receipt' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ scan_transaction_file_form.as_p }}
+                            <p><input type="submit" class="btn btn-secondary" value="upload"/></p>
+                         </form>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Manually Add Transaction</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">View All Transactions</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="col">
+      Scrollable & selectable list of latest transactions
+    </div>
+    <div class="col">
+      <p>Transaction Summary stats for current month</p>
+      <p>Number of transactions this month</p>
+      <p>Biggest and lowest transaction this month</p>
+      <p>Progress keeping around established benchmarks</p>
+      <p>Avg fuel price across fleet</p>
+
+    </div>
+  </div>
+    <div class="row">
+        <div class="col col-sm-5">
+            Graph of expenditure
+        </div>
+        <div class="col">
+            Maybe graph comparing activity from last few months to now
+
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

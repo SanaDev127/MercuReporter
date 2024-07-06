@@ -1,0 +1,34 @@
+{% extends "_base.html" %}
+{% block title %}Upload transaction file{% endblock %}
+{% block content %}
+<div class="container">
+  <div class=" row">
+    <div class="col">
+
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+             Transaction File Upload
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Select a file to upload</h5>
+                <p class="card-text">New transactions will be read and saved to the system.</p>
+                <form action="{% url 'transaction_upload' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <p><input type="submit" class="btn btn-secondary" value="upload"/></p>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col">
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

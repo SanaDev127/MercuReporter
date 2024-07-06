@@ -17,19 +17,16 @@ def user_login(request):
                                 password=cd['password'])
 
             if user is not None:
-                if user.is_actve:
-                    login(request, user)
-                    if user.groups.filter(name='Supervisors').exists():  # Depending on the group the user belongs to, send them to a specific home dashboards
-                        return render(request, 'supervisor_dashboard.html', {'user': user})
-                    elif user.groups.filter(name='Owners').exists():
-                        return render(request, 'owner_dashboard.html', {'user': user})
-                    elif user.groups.filter(name='Drivers').exists():
-                        return render(request, 'driver_dashboard.html', {'user': user})
-                    else:
-                        return render(request, 'home.html', {'user': user})
-
+                login(request, user)
+                if user.groups.filter(name='Supervisors').exists():  # Depending on the group the user belongs to, send them to a specific home dashboards
+                    return render(request, 'dashboards/supervisor_dashboard.html', {'user': user})
+                elif user.groups.filter(name='Owners').exists():
+                    return render(request, 'dashboards/owner_dashboard.html', {'user': user})
+                elif user.groups.filter(name='Drivers').exists():
+                    return render(request, 'dashboards/driver_dashboard.html', {'user': user})
                 else:
-                    return HttpResponse('Disabled account')
+                    return render(request, 'home.html', {'user': user})
+
             else:
                 return HttpResponse('Invalid Login')
     else:
@@ -58,9 +55,11 @@ def register(request):
                   {'user_form': user_form})
 
 
-
 class SignupPageView(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+
+
+
 

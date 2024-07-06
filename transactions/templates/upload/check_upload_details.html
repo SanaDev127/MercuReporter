@@ -1,0 +1,272 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Check Upload Details{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center">
+         <h3>Transaction Validation</h3>
+         <hr/>
+    </div>
+
+    <div class="row">
+        <div class="col col-sm-2 text-center">
+            <a class="btn btn-info" href="{% url 'transaction_dashboards' %}"><b>Back</b></a>
+        </div>
+        <div class="col text-center">
+            <h4><i>Check the accuracy of these transactions</i></h4>
+        </div>
+        <div class="col col-sm-2 text-center">
+             <a class="btn btn-success" href="{% url 'preview_upload' %}"><b>Continue</b></a>
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+         <div class="col">
+             <p class="text-center"><b>Suspected Duplicate Transactions: {{ num_dupes }}</b></p>
+            <hr/>
+             {% if duplicates %}
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Vehicle Registration
+                            </th>
+                            <th>
+                                Transaction Date
+                            </th>
+                             <th>
+                                Transaction Time
+                            </th>
+                             <th>
+                                Odometer Reading
+                            </th>
+                             <th>
+                                Quantity
+                            </th>
+                             <th>
+                                Amount
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for transaction in duplicates %}
+                    <tr>
+                        <td>
+                            {{ transaction.registration_number }}
+                        </td>
+                        <td>
+                            {{ transaction.date }}
+                        </td>
+                        <td>
+                            {{ transaction.time }}
+                        </td>
+                        <td>
+                            {{ transaction.odo_reading }}
+                        </td>
+                        <td>
+                            {{ transaction.quantity }}
+                        </td>
+                        <td>
+                            {{ transaction.amount }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+             {% else %}
+             <p>No suspected duplicate transactions</p>
+             {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <p class="text-center"><b>Transactions with irregular odometer readings: {{ num_odo }}</b></p>
+            <hr/>
+            {% if irregular_odo_readings %}
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Vehicle Registration
+                            </th>
+                            <th>
+                                Transaction Date
+                            </th>
+                             <th>
+                                Transaction Time
+                            </th>
+                             <th>
+                                Odometer Reading
+                            </th>
+                             <th>
+                                Quantity
+                            </th>
+                             <th>
+                                Amount
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for transaction in irregular_odo_readings %}
+                    <tr>
+                        <td>
+                            {{ transaction.registration_number }}
+                        </td>
+                        <td>
+                            {{ transaction.date }}
+                        </td>
+                        <td>
+                            {{ transaction.time }}
+                        </td>
+                        <td>
+                            {{ transaction.odo_reading }}
+                        </td>
+                        <td>
+                            {{ transaction.quantity }}
+                        </td>
+                        <td>
+                            {{ transaction.amount }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No transactions with irregular odometer readings</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+         <div class="col">
+            <p class="text-center"><b>Transactions with irregular quantities or amounts: {{ num_quants }}</b></p>
+            <hr/>
+             {% if irregular_quantity_amount %}
+           <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Vehicle Registration
+                            </th>
+                            <th>
+                                Transaction Date
+                            </th>
+                             <th>
+                                Transaction Time
+                            </th>
+                             <th>
+                                Odometer Reading
+                            </th>
+                             <th>
+                                Quantity
+                            </th>
+                             <th>
+                                Amount
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for transaction in irregular_quantity_amount %}
+                    <tr>
+                        <td>
+                            {{ transaction.registration_number }}
+                        </td>
+                        <td>
+                            {{ transaction.date }}
+                        </td>
+                        <td>
+                            {{ transaction.time }}
+                        </td>
+                        <td>
+                            {{ transaction.odo_reading }}
+                        </td>
+                        <td>
+                            {{ transaction.quantity }}
+                        </td>
+                        <td>
+                            {{ transaction.amount }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+             {% else %}
+             <p>No transactions with irregular quantities or amounts</p>
+             {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <p class="text-center"><b>Transactions from unregistered vehicles</b></p>
+            <hr/>
+            {% if unregistered_vehicle_transactions %}
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Vehicle Registration
+                            </th>
+                            <th>
+                                Transaction Date
+                            </th>
+                             <th>
+                                Transaction Time
+                            </th>
+                             <th>
+                                Odometer Reading
+                            </th>
+                             <th>
+                                Quantity
+                            </th>
+                             <th>
+                                Amount
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for transaction in unregistered_vehicle_transactions %}
+                    <tr>
+                        <td>
+                            {{ transaction.registration_number }}
+                        </td>
+                        <td>
+                            {{ transaction.date }}
+                        </td>
+                        <td>
+                            {{ transaction.time }}
+                        </td>
+                        <td>
+                            {{ transaction.odo_reading }}
+                        </td>
+                        <td>
+                            {{ transaction.quantity }}
+                        </td>
+                        <td>
+                            {{ transaction.amount }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No transactions from unregistered vehicles</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
