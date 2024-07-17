@@ -1,45 +1,46 @@
 import datetime
 from django.db import models
 from accounts.models import CustomUser
+from fleet.models import Fleet
 
 
-class FleetManager(models.Manager):
+class BrandManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset()
 
 
-class Fleet(models.Model):
-    Name = models.CharField(max_length=220)
-    date_created = models.DateField(auto_now_add=True)
-    owner = models.ForeignKey(CustomUser,
-                              related_name='owned_fleets',
-                              on_delete=models.CASCADE)
-    supervisor = models.ForeignKey(CustomUser,
-                                   related_name='supervised_fleets',
-                                   null=True,
-                                   on_delete=models.SET_NULL)
-    fleets = FleetManager()
-
-    def __str__(self):
-        return self.Name
-
-
-
 class Brand(models.Model):
     Name = models.CharField(max_length=200)
+    fleet = models.ForeignKey(Fleet,
+                              related_name='brands',
+                              null=True,
+                              on_delete=models.SET_NULL)
+    brands = BrandManager()
 
     def __str__(self):
         return self.Name
+
+
+class MerchantManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
 
 
 class Merchant(models.Model):
     Name = models.CharField(max_length=200, default='Other/Ander')
-    latitude = models.DecimalField(decimal_places=2, max_digits=10)
-    longitude = models.DecimalField(decimal_places=2, max_digits=10)
+    latitude = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    longitude = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    address = models.CharField(max_length=300, null=True, blank=True)
     brand = models.ForeignKey(Brand,
                               related_name='merchants',
                               null=True,
+                              on_delete=models.SET_NULL, blank=True)
+    fleet = models.ForeignKey(Fleet,
+                              related_name='fleet_merchants',
+                              null=True,
                               on_delete=models.SET_NULL)
+
+    merchants = MerchantManager()
 
     def __str__(self):
         return self.Name
@@ -77,7 +78,7 @@ class Transaction(models.Model):
                               related_name='brand_transactions',
                               null=True,
                               on_delete=models.SET_NULL)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200, null=True)
     merchant = models.ForeignKey(Merchant,
                                  related_name='merchant_transactions',
                                  null=True,

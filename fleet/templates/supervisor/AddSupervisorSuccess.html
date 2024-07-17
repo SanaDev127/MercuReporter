@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Add Supervisor Success{% endblock title %}
+
+{% block content %}
+<div class="container text-center">
+
+    <div class="row">
+        <div class="col"></div>
+
+        <div class="col" >
+            <div class="card-body">
+                <h5 class="card-title">Supervisor added to your fleet!</h5>
+                <p class="card-text">{{ supervisor.user.username }}, is ready to help manage your fleet</p>
+                <br/>
+
+                <div class="btn-toolbar text-center" role="group" aria-label="Basic mixed styles example" style="width: 35rem;">
+                    <a class="btn btn-success" href="{% url 'owner_fleet_details' fleet.id %}" style="width: 10rem;" >Done</a>
+                    <a class="btn btn-dark" href="{% url 'add_fleet_supervisor' fleet.id %}" style="width: 10rem;">Add Another Supervisor</a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col"></div>
+    </div>
+</div>
+
+{% endblock content %}

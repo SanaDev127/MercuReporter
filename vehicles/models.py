@@ -19,6 +19,10 @@ class Vehicle(models.Model):
                                null=True,
                                on_delete=models.SET_NULL)
     date_added = models.DateTimeField(auto_now_add=True)
+    addedBy = models.ForeignKey(CustomUser,
+                                related_name='vehicles_added',
+                                null=True,
+                                on_delete=models.SET_NULL)
 
     vehicles = VehicleManager()
 

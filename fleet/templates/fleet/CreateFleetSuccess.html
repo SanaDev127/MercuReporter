@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Create Fleet Success{% endblock title %}
+
+{% block content %}
+<div class="container text-center">
+
+    <div class="row">
+        <div class="col"></div>
+
+        <div class="col" >
+            <div class="card-body">
+                <h5 class="card-title">Fleet Created Successfully!</h5>
+                <p class="card-text">{{ fleet.Name }}, is ready for use.</p>
+                <br/>
+
+                <div class="btn-toolbar text-center" role="group" aria-label="Basic mixed styles example" style="width: 35rem;">
+                    <a class="btn btn-success" href="{% url 'fleet_dashboards' %}" style="width: 10rem;" >Done</a>
+                    <a class="btn btn-dark" href="{% url 'fleet_dashboards' %}" style="width: 10rem;">Add Vehicles</a>
+                    <a class="btn btn-info" href="{% url 'add_fleet_supervisors' fleet.id%}" style="width: 10rem;">Add Supervisor(s)</a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col"></div>
+    </div>
+</div>
+
+{% endblock content %}

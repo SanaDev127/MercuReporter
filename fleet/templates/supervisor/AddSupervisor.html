@@ -1,0 +1,36 @@
+{% extends "_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Add Supervisor{% endblock title %}
+
+{% block content %}
+<div class="container text-center">
+
+    <div class="row">
+        <div class="col col-sm-2 text-center">
+            <a class="btn btn-info" href="{% url 'owner_fleet_details' fleet.id %}"><b>Back</b></a>
+        </div>
+        <div class="col text-center"></div>
+        <div class="col col-sm-2 text-center"></div>
+    </div>
+
+    <div class="row">
+        <div class="col"></div>
+
+        <div class="col">
+            <div class="card-body">
+                <h5 class="card-title">Add Supervisor to your fleet</h5>
+                <p class="card-text">Enter the details for your fleet's supervisor:</p>
+                <form action="{% url 'add_fleet_supervisor' fleet.id %}" method="post" enctype="multipart/form-data">
+                 {% csrf_token %}
+                 {{ add_supervisor_form|crispy }}
+                <p><input type="submit" class="btn btn-secondary" value="Add Supervisor"/></p>
+                </form>
+            </div>
+        </div>
+
+        <div class="col"></div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -3,8 +3,7 @@
 {% block title %}Supervisor Fleet Dash{% endblock title %}
 
 {% block content %}
-
-    <div class="row">
+<div class="row">
         <div class="col col-sm-3">
             <h3><b>{{ fleet.Name }}</b></h3>
         </div>
@@ -12,20 +11,21 @@
             <p class="fs-3 text-center">Vehicles</p>
         </div>
         <div class="col">
-            <p class="fs-3 text-center">Latest Transactions</p>
+            <p class="fs-3 text-center"></p>
         </div>
-    </div>
-  <div class="row">
+</div>
+<div class="row">
     <div class="col col-sm-3">
         <ul class="nav flex-column">
             <li class="nav-item">
                 <div class="card">
                     <div class="card-header bg-warning">
-                        <b>Add a vehicle</b>
+                        <b>Manage Vehicles</b>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Click here to add a new vehicle</h5>
+                        <h5 class="card-title">Edit or Add a Vehicle</h5>
                         <a class="btn btn-secondary" href="{% url 'add_vehicle' fleet.id %}">Add</a>
+                        <a class="btn btn-dark" href="#">Edit</a>
                     </div>
                 </div>
             </li>
@@ -35,22 +35,24 @@
             <li class="nav-item">
                 <div class="card">
                     <div class="card-header bg-info">
-                        <b>Add a Merchant</b>
+                        <b>Manage Merchants</b>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Click here to add a new fuel station</h5>
+                        <h5 class="card-title">Edit or Add a Merchant</h5>
                         <a class="btn btn-secondary" href="{% url 'add_merchant' fleet.id %}">Add</a>
+                        <a class="btn btn-dark" href="#">Edit</a>
                     </div>
                 </div>
             </li>
             <li class="nav-item">
                 <div class="card">
                     <div class="card-header bg-primary">
-                        <b>Add a Brand</b>
+                        <b>Manage Brands</b>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Click here to add a new fuel supply brand</h5>
+                        <h5 class="card-title">Edit or add a Brand</h5>
                         <a class="btn btn-secondary" href="{% url 'add_brand' fleet.id %}">Add</a>
+                        <a class="btn btn-dark" href="#">Edit</a>
                     </div>
                 </div>
             </li>
@@ -90,49 +92,50 @@
             </tbody>
         </table>
     </div>
-
     </div>
     <div class="col">
-     <div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Registration Number
-                    </th>
-                    <th>
-                        Date
-                    </th>
-                    <th>
-                        Quantity
-                    </th>
-
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-
-                {% for transaction in transactions %}
-                    <tr>
-                        <td>
-                            {{ transaction.registration_number }}
-                        </td>
-                        <td>
-                            {{ transaction.date }}
-                        </td>
-                         <td>
-                            {{ transaction.quantity }}
-                        </td>
-                        <td>
-                            <a class="btn btn-dark">View</a>
-                        </td>
-                    </tr>
+        <h4 class="card-title"><b>Fleet Service Stations</b></h4>
+        <hr>
+            <div>
+                {% for merchant in merchants %}
+                <div class="card card-outline-primary m-1 p-1">
+                    <div class="bg-faded p-1">
+                        <h5>
+                            {{ merchant.Name }}
+                            <span class="badge rounded-pill bg-primary text-white" style="float:right">
+                                <a href="#" class="btn btn-primary"><b>View</b></a>
+                            </span>
+                        </h5>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No Merchants in fleet</p>
                 {% endfor %}
+            </div>
+        <hr>
+        <h4 class="card-title"><b>Fleet Brands</b></h4>
+        <hr>
+            <div>
+                {% for brand in brands %}
+                <div class="card card-outline-primary m-1 p-1">
+                    <div class="bg-faded p-1">
+                        <h5>
+                            {{ brand.Name }}
+                            <span class="badge rounded-pill bg-secondary text-white" style="float:right">
+                                <a href="#" class="btn btn-secondary"><b>View</b></a>
+                            </span>
+                        </h5>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No Brands in fleet</p>
+                {% endfor %}
+            </div>
+    </div>
 
-            </tbody>
-        </table>
-    </div>
-    </div>
-  </div>
+</div>
+
+
+
 
 {% endblock content %}

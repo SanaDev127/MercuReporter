@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-# from vehicles.models import Vehicle
-# from transactions.models import Fleet
 
 
 class CustomUser(AbstractUser):
@@ -25,13 +23,13 @@ class CustomUser(AbstractUser):
             return False
 
     def owns_fleet(self, fleet):
-        from transactions.models import Fleet
+        from fleet.models import Fleet
 
         owned_fleets = Fleet.fleets.get_queryset().filter(owner=self)
         return fleet in owned_fleets
 
     def get_owner_fleets(self):
-        from transactions.models import Fleet
+        from fleet.models import Fleet
 
         if self.is_owner():
             owned_fleets = Fleet.fleets.get_queryset().filter(owner=self)
@@ -65,4 +63,41 @@ class CustomUser(AbstractUser):
         else:
             return None
 
+
+class Owner(models.Model):
+    user = models.OneToOneField(CustomUser,
+                                on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
+
+
+class SupervisorManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
+
+
+class Supervisor(models.Model):
+    from fleet.models import Fleet
+
+    user = models.OneToOneField(CustomUser,
+                                on_delete=models.CASCADE)
+
+    fleet = models.ForeignKey(Fleet,
+                              related_name="supervised_fleet",
+                              null=True,
+                              on_delete=models.SET_NULL)
+
+    supervisors = SupervisorManager()
+
+    def __str__(self):
+        return self.user.username
+
+
+class Driver(models.Model):
+    user = models.OneToOneField(CustomUser,
+                                on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
 

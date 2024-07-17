@@ -1,9 +1,14 @@
-import pandas as pd
-from django.shortcuts import render
+from datetime import datetime
+import calendar
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from django.contrib.auth.decorators import login_required
+
+import fleet.views
 from transactions.forms import UploadTransactionFileForm, ScanTransactionForm
-from django.http import HttpResponse
+from fleet.models import Fleet
+from vehicles.models import Vehicle
+from transactions.models import Transaction
+from accounts.models import Supervisor
 from transactions import TransData
 
 
@@ -34,13 +39,26 @@ def transaction_dashboard(request):
                        'upload_transaction_file_form': transaction_upload_form,
                        'scan_transaction_file_form': transaction_scan_form})
     elif user.is_supervisor():
+        supervisor = Supervisor.supervisors.get(user=user)
+        fleet = supervisor.fleet
+
         transaction_upload_form = UploadTransactionFileForm()
         transaction_scan_form = ScanTransactionForm()
+        summary_stats = TransData.fleet_summary_stats(fleet)
+        current_month = calendar.month_name[datetime.now().month]
+
         return render(request,
                       'dashboards/transactions/supervisor_transactions.html',
                       {'user': user,
+                       "fleet": fleet,
                        'upload_transaction_file_form': transaction_upload_form,
-                       'scan_transaction_file_form': transaction_scan_form})
+                       "current_month": current_month,
+                       'scan_transaction_file_form': transaction_scan_form,
+                       "num_transactions": summary_stats["num_transactions"],
+                       "avg_fuel_price": summary_stats["avg_fuel_price"],
+                       "largest_transaction": summary_stats["largest_transaction"],
+                       "smallest_transaction": summary_stats["smallest_transaction"]
+                       })
     elif user.is_owner():
         return render(request,
                       'dashboards/transactions/owner_transactions.html',
@@ -66,13 +84,14 @@ def analytics_dash(request):
 def fleet_dash(request):
     user = request.user
     if user.is_owner():
+        created_fleets = Fleet.fleets.get_queryset().filter(owner=user)
         return render(request,
                       'dashboards/fleet/owner_fleets.html',
-                      {'user': user})
+                      {'user': user,
+                       'created_fleets': created_fleets})
     elif user.is_supervisor():
-        return render(request,
-                      'dashboards/fleet/supervisor_fleet.html',
-                      {'user': user})
+
+        return redirect(fleet.views.supervisor_fleet_details)
 
 
 def vehicle_dash(request):

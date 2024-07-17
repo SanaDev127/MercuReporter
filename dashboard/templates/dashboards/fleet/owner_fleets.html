@@ -6,10 +6,10 @@
 
 <div class="container">
   <div class=" row">
-    <div class="col col-sm-4">
+    <div class="col col-sm-3">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <p class="fs-2">Fleet Activities</p>
+                <p class="fs-2">Activities</p>
             </li>
             <li class="nav-item">
                 <div class="card">
@@ -18,7 +18,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Click here to create a new vehicle fleet</h5>
-                        <a class="btn btn-secondary">Create</a>
+                        <a class="btn btn-secondary" href="{% url 'create_fleet' %}">Create</a>
                     </div>
                 </div>
             </li>
@@ -26,7 +26,38 @@
         </ul>
     </div>
     <div class="col">
-      Scrollable & selectable list of created fleets
+          <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Fleet Name
+                    </th>
+                    <th>
+                        Date Created
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for fleet in created_fleets %}
+                    <tr>
+                        <td>
+                            {{ fleet.Name }}
+                        </td>
+                        <td>
+                            {{ fleet.date_created }}
+                        </td>
+                        <td>
+                            <a class="btn btn-dark" href="{% url 'owner_fleet_details' fleet.id %}">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
     </div>
     <div class="col col-sm-3">
       <p>Fleet Summary stats for current month</p>

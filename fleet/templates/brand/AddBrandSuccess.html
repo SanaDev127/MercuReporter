@@ -1,0 +1,31 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Add Brand Success{% endblock title %}
+
+{% block content %}
+<div class="container text-center">
+
+    <div class="row">
+        <div class="col"></div>
+
+        <div class="col" >
+            <div class="card-body">
+                <h5 class="card-title">Brand Successfully Added!</h5>
+                <p class="card-text">{{ brand.Name }}'s details have been captured</p>
+                <br/>
+                <div class="btn-toolbar text-center" role="group" aria-label="Basic mixed styles example" style="width: 35rem;">
+                    {% if user.is_owner %}
+                        <a class="btn btn-success" href="{% url 'owner_fleet_details' fleet.id %}" >Done</a>
+                    {% else %}
+                        <a class="btn btn-success" href="{% url 'supervisor_fleet_details' fleet.id %}" >Done</a>
+                    {% endif %}
+                   <a class="btn btn-dark" href="{% url 'add_brand' fleet.id %}" >Add Another Merchant</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col"></div>
+    </div>
+</div>
+
+{% endblock content %}

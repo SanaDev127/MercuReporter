@@ -12,6 +12,5 @@ class ScanTransactionForm(forms.Form):
     file = forms.ImageField()
 
 
-class CreateFleetForm(forms.Form):
-    name = forms.CharField()
+
     

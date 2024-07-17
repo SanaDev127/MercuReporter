@@ -55,6 +55,7 @@ def register(request):
                   {'user_form': user_form})
 
 
+
 class SignupPageView(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")

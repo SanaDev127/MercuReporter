@@ -3,7 +3,7 @@ import numpy as np
 from transactions.models import Transaction
 from vehicles.models import Vehicle
 import logging
-from accounts.models import CustomUser
+from accounts.models import Supervisor
 
 dataframe_columns = ['Client Name', 'Registration No.', 'Driver Name', 'Transaction Description',
                      'Transaction Date', 'Transaction Time', 'Merchant Name', 'Odo Reading', 'Quantity', 'Amount']
@@ -59,7 +59,6 @@ def transaction_dataframe_processor(file_path, user, fleet=None):
         new_vehicle_df = (grouped_unprocessed_transactions.get_group(vehicle_reg_no))
         new_vehicle_transactions = list()
         for index, row in new_vehicle_df.iterrows():
-
             transaction_data = pd.Series([row["Client Name"], row["Registration No."], row["Driver Name"],
                                           row["Model Description"], row["Cycle End Date"], row["Brand Description"],
                                           row["Transaction Date"], row["Transaction Time"], row['Merchant Name'],
@@ -72,6 +71,7 @@ def transaction_dataframe_processor(file_path, user, fleet=None):
                     row["Model Description"], str(row["Cycle End Date"]), row["Brand Description"],
                     str(row["Transaction Date"]), str(row["Transaction Time"]), row['Merchant Name'],
                     row['Odo Reading'], row['Quantity'], row['Amount']]
+            # Dates and times must be strings because timestamps aren't JSON serializable
             all_new_transactions.append(data)
 
         all_vehicle_transactions = transactions_to_series_list(Transaction.vehicles.get_queryset(vehicle_reg_no))
@@ -89,7 +89,8 @@ def transaction_dataframe_processor(file_path, user, fleet=None):
             irregular_quantity_amount_transactions.append(quant)
 
         if user.is_supervisor():
-            fleet = user.get_supervisor_fleet()
+            supervisor_object = Supervisor.supervisors.get(user=user)
+            fleet = supervisor_object.fleet
 
         unregistered = unregistered_vehicle_checker(new_vehicle_transactions, fleet)
         for trans in unregistered:
@@ -103,7 +104,8 @@ def transaction_dataframe_processor(file_path, user, fleet=None):
             }
 
 
-def transactions_to_series_list(transaction_objects):  # Converts queryset of objects to list of series
+#  Converts queryset of objects to list of series
+def transactions_to_series_list(transaction_objects):
     transaction_list = list()
     for trans_object in transaction_objects:
         trans_data = pd.Series([trans_object.client, trans_object.time, trans_object.date,
@@ -169,6 +171,14 @@ def transaction_quantity_amount_checker(all_vehicle_transactions, new_vehicle_tr
     return irregular_quantity_amount_transactions
 
 
+def fleet_summary_stats(fleet):
+    return ({
+        "num_transactions": 0,
+        "avg_fuel_price": 0,
+        "largest_transaction": "Nothing Yet",
+        "smallest_transaction": "Nothing Yet"})
+
+
 def avg_dist_calc(data_points):
     distances = list()
     for i in range(0, data_points.size):
@@ -201,16 +211,19 @@ def unregistered_vehicle_checker(new_vehicle_transactions, fleet):
 
 # takes in a dataframe representing a single vehicle's transactions and returns the distance it travelled
 def calculate_vehicle_distance_travelled(vehicle_transactions):
-    distance = (np.array(vehicle_transactions["odo_reading"]).max() - np.array(vehicle_transactions["odo_reading"]).min())
+    distance = (np.array(vehicle_transactions["odo_reading"]).max() - np.array(
+        vehicle_transactions["odo_reading"]).min())
     return float(distance)
 
 
+# takes in a dataframe representing a single vehicle's transactions and returns the amount it spent
 def calculate_vehicle_amount_spent(v_transactions):
     vehicle_transactions = pd.DataFrame(v_transactions)
     spent = np.array(vehicle_transactions["amount"]).sum()
     return float(spent)
 
 
+# takes in a dataframe representing a single vehicle's transactions and returns the amount it poured
 def calculate_vehicle_amount_poured(v_transactions):
     vehicle_transactions = pd.DataFrame(v_transactions)
     poured = np.array(vehicle_transactions["quantity"]).sum()
