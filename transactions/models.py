@@ -2,6 +2,7 @@ import datetime
 from django.db import models
 from accounts.models import CustomUser
 from fleet.models import Fleet
+from vehicles.models import Vehicle
 
 
 class BrandManager(models.Manager):
@@ -69,6 +70,10 @@ class Transaction(models.Model):
     time = models.TimeField(default=datetime.time)
     date = models.DateField(default=datetime.date.today)
     registration_number = models.CharField(max_length=10)
+    vehicle = models.ForeignKey(Vehicle,
+                                related_name='vehicle_transactions',
+                                null=True,
+                                on_delete=models.SET_NULL)
     driver = models.ForeignKey(CustomUser,
                                related_name='driver_transactions',
                                null=True,

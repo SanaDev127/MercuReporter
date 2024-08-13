@@ -3,7 +3,74 @@
 {% block title %}Supervisor Analytics{% endblock title %}
 
 {% block content %}
+<div class="row">
+    <div class="col"></div>
+    <div class="col text-center">
+        <p class="fs-1"><b>Fleet Reports</b></p>
+    </div>
+    <div class="col"></div>
+</div>
+<br>
+<br>
+<div class="container" style="margin-left: 3rem">
+    <div class="row">
+           <div class="col">
+               <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
+                    <button type="button" class="btn btn-warning " data-bs-toggle="dropdown" aria-expanded="false">
+                       <b>
+                           <span class="text-white" style="font-size:30px">General Report</span>
+                       </b>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Basic</a></li>
+                      <li><a class="dropdown-item" href="#">Detailed</a></li>
+                      <li><a class="dropdown-item" href="#">Custom</a></li>
+                    </ul>
+                 </div>
+           </div>
+           <div class="col">
+                <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
+                    <button type="button" class="btn btn-info " data-bs-toggle="dropdown" aria-expanded="false">
+                       <b>
+                           <span class="text-white" style="font-size:30px">Managers</span>
+                       </b>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Basic</a></li>
+                      <li><a class="dropdown-item" href="#">Detailed</a></li>
+                    </ul>
+                 </div>
+           </div>
+           <div class="col">
+                <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
+                    <button type="button" class="btn btn-secondary " data-bs-toggle="dropdown" aria-expanded="false">
+                       <b>
+                           <span class="text-white" style="font-size:30px">Service Stations</span>
+                       </b>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Basic</a></li>
+                      <li><a class="dropdown-item" href="#">Detailed</a></li>
+                    </ul>
+                 </div>
+           </div>
 
-  <p>Supervisor Analytics Dash</p>
+            <div class="col">
+                <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
+                    <button type="button" class="btn btn-primary " data-bs-toggle="dropdown" aria-expanded="false">
+                       <b>
+                           <span class="text-white" style="font-size:30px">Brands</span>
+                       </b>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Basic</a></li>
+                      <li><a class="dropdown-item" href="#">Detailed</a></li>
+                    </ul>
+                 </div>
+            </div>
+     </div>
+</div>
+
+
 
 {% endblock content %}

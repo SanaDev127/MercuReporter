@@ -1,7 +1,7 @@
 from django import forms
 from accounts.models import CustomUser, Supervisor
-from vehicles.models import Vehicle
 from transactions.models import Brand
+from django.core.validators import FileExtensionValidator
 
 
 class CreateFleetForm(forms.Form):
@@ -48,3 +48,9 @@ class AddMerchantForm(forms.Form):
 
 class AddBrandForm(forms.Form):
     Name = forms.CharField(label="Brand Name")
+
+
+class UploadVehicleFileForm(forms.Form):
+    file = forms.FileField(validators=[
+        FileExtensionValidator(allowed_extensions=['xlsx'])
+    ])

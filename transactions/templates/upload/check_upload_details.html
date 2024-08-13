@@ -17,7 +17,11 @@
             <h4><i>Check the accuracy of these transactions</i></h4>
         </div>
         <div class="col col-sm-2 text-center">
-             <a class="btn btn-success" href="{% url 'preview_upload' %}"><b>Continue</b></a>
+            {% if unregistered_vehicle_transactions %}
+
+            {% else %}
+                <a class="btn btn-success" href="{% url 'preview_upload' fleet.id %}"><b>Continue</b></a>
+            {% endif %}
         </div>
     </div>
 
@@ -208,7 +212,7 @@
 
     <div class="row">
         <div class="col">
-            <p class="text-center"><b>Transactions from unregistered vehicles</b></p>
+            <p class="text-center"><b>Transactions from unregistered vehicles <u>(Must be empty before progressing)</u></b></p>
             <hr/>
             {% if unregistered_vehicle_transactions %}
             <div>

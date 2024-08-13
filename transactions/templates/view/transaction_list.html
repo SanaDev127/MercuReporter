@@ -1,0 +1,111 @@
+{% extends "_base.html" %}
+
+{% block title %}Transaction List{% endblock title %}
+
+{% block content %}
+<div class="row">
+        <div class="col col-sm-3">
+            {% if user.is_owner %}
+            <a class="btn btn-info" href="{% url 'owner_fleet_details' fleet.id %}"><b>Back</b></a>
+            {% else %}
+            <a class="btn btn-info" href="{% url 'supervisor_fleet_details' %}"><b>Back</b></a>
+            {% endif %}
+        </div>
+        <div class="col">
+          <form action="{% url 'transaction_list' fleet.id %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <span><b>From</b></span>
+               {{ form.start_date }}<span><b>To</b></span>
+               {{ form.end_date }}
+              <input type="submit" class="btn btn-secondary" value="Search"/>
+          </form>
+        </div>
+        <div class="col col-sm-1">
+            <p class="fs-3 text-center"></p>
+        </div>
+</div>
+<div class="row">
+    <div class="col col-sm-1"></div>
+    <div class="col">
+          <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Vehicle
+                    </th>
+                    <th>
+                        Merchant
+                    </th>
+                    <th>
+                        Odo Reading
+                    </th>
+                     <th>
+                       Quantity
+                     </th>
+                    <th>
+                       Amount
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>
+                            {{ transaction.time }}
+                        </td>
+                        <td>
+                            {{ transaction.date }}
+                        </td>
+                        <td>
+                            {{ transaction.registration_number }}
+                        </td>
+                         <td>
+                            {{ vehicle.merchant }}
+                        </td>
+                         <td>
+                            {{ transaction.odo_reading }}
+                        </td>
+                         <td>
+                            {{ transaction.quantity }}
+                        </td>
+                         <td>
+                            {{ transaction.amount }}
+                        </td>
+
+                        <td>
+                            <a class="btn btn-dark">Details</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                <p class="text-center">Search for fleet transactions in a date range</p>
+                {% endfor %}
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+    <div class="col col-sm-2">
+        <div class="card card-outline-primary m-1 p-1">
+            <div class="bg-faded p-1">
+                <h5>
+                    Found transactions
+                    <span class="badge rounded-pill bg-primary text-white" style="float:right">
+                        {{ num_transactions }}
+                    </span>
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

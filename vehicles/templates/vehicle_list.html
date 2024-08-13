@@ -1,0 +1,85 @@
+{% extends "_base.html" %}
+
+{% block title %}Vehicle List{% endblock title %}
+
+{% block content %}
+<div class="row">
+        <div class="col col-sm-3">
+            {% if user.is_owner %}
+            <a class="btn btn-info" href="{% url 'owner_fleet_details' fleet.id %}"><b>Back</b></a>
+            {% else %}
+            <a class="btn btn-info" href="{% url 'supervisor_fleet_details' %}"><b>Back</b></a>
+            {% endif %}
+        </div>
+        <div class="col">
+
+        </div>
+        <div class="col col-sm-1">
+            <p class="fs-3 text-center"></p>
+        </div>
+</div>
+<div class="row">
+    <div class="col col-sm-1"></div>
+    <div class="col">
+          <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Model Description
+                    </th>
+                    <th>
+                        Registration Number
+                    </th>
+                    <th>
+                        Vehicle Status
+                    </th>
+                    <th>
+                        Last Odo-Reading
+                    </th>
+                    <th>
+                        Consumption (L/100km)
+                    </th>
+                    <th>
+                        Number of Transactions
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for vehicle in vehicles %}
+                    <tr>
+                        <td>
+                            {{ vehicle.model_description }}
+                        </td>
+                        <td>
+                            {{ vehicle.registration_number }}
+                        </td>
+                        <td>
+                            {{ vehicle.status }}
+                        </td>
+                         <td>
+                            {{ vehicle.last_odo_reading }}
+                        </td>
+                         <td>
+                            {{ vehicle.consumption }}
+                        </td>
+                        <td>
+                            {{ vehicle.transaction_count }}
+                        </td>
+                        <td>
+                            <a class="btn btn-dark">Details</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+    <div class="col col-sm-1"></div>
+</div>
+
+{% endblock content %}

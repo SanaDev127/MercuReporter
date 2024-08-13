@@ -44,20 +44,26 @@ def transaction_dashboard(request):
 
         transaction_upload_form = UploadTransactionFileForm()
         transaction_scan_form = ScanTransactionForm()
-        summary_stats = TransData.fleet_summary_stats(fleet)
-        current_month = calendar.month_name[datetime.now().month]
+        # Showing stats for previous month because most likely won't be getting realtime data
+        # previous_month = calendar.month_name[datetime.now().month - 1]
+        latest_transactions = Transaction.transactions.get_queryset().filter(fleet=fleet).order_by('-date')[:10]
+        latest_transaction = latest_transactions[:1].get()
+        current_year = latest_transaction.date.year
+        latest_month = latest_transaction.date.month
+        summary_stats = TransData.fleet_summary_stats(fleet.id, current_year, latest_month)
 
         return render(request,
                       'dashboards/transactions/supervisor_transactions.html',
                       {'user': user,
                        "fleet": fleet,
                        'upload_transaction_file_form': transaction_upload_form,
-                       "current_month": current_month,
+                       "latest_month": calendar.month_name[latest_transaction.date.month],
                        'scan_transaction_file_form': transaction_scan_form,
                        "num_transactions": summary_stats["num_transactions"],
                        "avg_fuel_price": summary_stats["avg_fuel_price"],
                        "largest_transaction": summary_stats["largest_transaction"],
-                       "smallest_transaction": summary_stats["smallest_transaction"]
+                       "smallest_transaction": summary_stats["smallest_transaction"],
+                       "latest_transactions": latest_transactions,
                        })
     elif user.is_owner():
         return render(request,

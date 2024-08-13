@@ -23,6 +23,12 @@ class Vehicle(models.Model):
                                 related_name='vehicles_added',
                                 null=True,
                                 on_delete=models.SET_NULL)
+    area = models.CharField(max_length=250, null=True)
+    vehicle_status = models.CharField(max_length=20, null=True)
+    colour = models.CharField(max_length=30, null=True)
+    litres_limit = models.IntegerField(null=True)
+    primary_tank_capacity = models.IntegerField(null=True)
+    secondary_tank_capacity = models.IntegerField(null=True)
 
     vehicles = VehicleManager()
 

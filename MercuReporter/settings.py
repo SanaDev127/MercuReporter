@@ -1,8 +1,8 @@
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -14,7 +14,6 @@ SECRET_KEY = "django-insecure-(e7s)d*7x+zwq(a)_!d$0bt-5w+ow%_x((a-(4a4@x_2un_*f(
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -28,12 +27,14 @@ INSTALLED_APPS = [
     # Third-party
     "crispy_forms",
     "crispy_bootstrap5",
+
     # Local
     "accounts.apps.AccountsConfig",
     "transactions.apps.TransactionsConfig",
     "dashboard.apps.DashboardConfig",
     "vehicles.apps.VehiclesConfig",
     "fleet.apps.FleetConfig",
+    # "django_truncate",
 ]
 
 MIDDLEWARE = [
@@ -66,7 +67,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "MercuReporter.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -79,10 +79,8 @@ DATABASES = {
         "HOST": "db",
         "PORT": 5432,
 
-
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -102,7 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -114,10 +111,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 
 
 # Default primary key field type
@@ -145,13 +140,14 @@ LOGGING = {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
             'filename': BASE_DIR / 'warning.log',
+
         },
     },
     # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
     'loggers': {
-       # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
+        # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
         '': {
-            'handlers': ['file'], #notice how file variable is called in handler which has been defined above
+            'handlers': ['file'],  # notice how file variable is called in handler which has been defined above
             'level': 'WARNING',
             'propagate': True,
         },

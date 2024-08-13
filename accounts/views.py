@@ -5,6 +5,8 @@ from .forms import CustomUserCreationForm, LoginForm, UserRegistrationForm
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
+from .models import CustomUser
+from django.contrib import messages
 
 
 def user_login(request):
@@ -18,7 +20,8 @@ def user_login(request):
 
             if user is not None:
                 login(request, user)
-                if user.groups.filter(name='Supervisors').exists():  # Depending on the group the user belongs to, send them to a specific home dashboards
+                # Depending on the group the user belongs to, send them to a specific home dashboards 
+                if user.groups.filter(name='Supervisors').exists():
                     return render(request, 'dashboards/supervisor_dashboard.html', {'user': user})
                 elif user.groups.filter(name='Owners').exists():
                     return render(request, 'dashboards/owner_dashboard.html', {'user': user})
@@ -38,22 +41,25 @@ def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(
-                user_form.cleaned_data['password']
-            )
-            group = Group.objects.get(name=user_form.cleaned_data['group'])
-            new_user.save()
-            new_user.groups.add(group)
-            return render(request,
-                          'account/register_done.html',
-                          {'new_user': new_user})
+            if CustomUser.objects.filter(username__iexact=user_form.cleaned_data['username']):
+                messages.warning(request, "Username is unavailable. Please try again.")
+
+            else:
+                new_user = user_form.save(commit=False)
+                new_user.set_password(
+                    user_form.cleaned_data['password']
+                )
+                group = Group.objects.get(name=user_form.cleaned_data['group'])
+                new_user.save()
+                new_user.groups.add(group)
+                return render(request,
+                              'account/register_done.html',
+                              {'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
     return render(request,
                   'account/register.html',
                   {'user_form': user_form})
-
 
 
 class SignupPageView(generic.CreateView):

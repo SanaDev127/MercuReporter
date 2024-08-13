@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% load static %}
-{% block title %}Upload Transaction File Success{% endblock title %}
+{% block title %}Add Vehicle List Success{% endblock title %}
 
 {% block content %}
 <div class="container text-center">
@@ -10,14 +10,22 @@
 
         <div class="col" >
             <div class="card-body">
-                <h5 class="card-title">Transaction file has successfully been uploaded!</h5>
-                <p class="card-text">{{ num_transactions }} transactions have been saved to {{ fleet.Name }}.</p>
+                <h5 class="card-title">Successfully added list of vehicles to your fleet!</h5>
+                <p class="card-text">{{ num_added_vehicles }} vehicles were successfully loaded</p>
+
+                {% if duplicates %}
+                <hr>
+                <p class="card-text">The following vehicles were ignored because they were already in the fleet:</p>
+                {% for duplicate in duplicates %}
+                <p>{{ duplicate }}</p>
+                {% endfor %}
                 <br/>
+
                 <div class="btn-toolbar text-center" role="group" aria-label="Basic mixed styles example" style="width: 35rem;">
                     {% if user.is_owner %}
                         <a class="btn btn-success" href="{% url 'owner_fleet_details' fleet.id %}" >Done</a>
                     {% else %}
-                        <a class="btn btn-success" href="{% url 'supervisor_fleet_details' %}" >Done</a>
+                        <a class="btn btn-success" href="{% url 'supervisor_fleet_details' fleet.id %}" >Done</a>
                     {% endif %}
                 </div>
 

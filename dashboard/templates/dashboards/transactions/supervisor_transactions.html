@@ -14,7 +14,7 @@
                 <p class="fs-2 text-center">Latest Transactions</p>
         </div>
         <div class="col">
-                <p class="fs-2 text-center">{{ current_month }} Transaction Stats  </p>
+                <p class="fs-2 text-center">{{ latest_month }} Transaction Stats  </p>
         </div>
     </div>
 
@@ -39,8 +39,33 @@
                         </form>
                     </div>
                 </div>
+                <br/>
             </li>
-            <br/>
+
+            <li class="nav-item">
+                <div class="card card-outline-primary m-1 p-1">
+                    <div class="bg-faded p-1 text-center">
+                        <h5>
+                            Manually Add Transaction
+                        </h5>
+                        <a class="btn btn-secondary" href="#">Add</a>
+                    </div>
+                </div>
+                 <br/>
+            </li>
+
+            <li class="nav-item">
+                <div class="card card-outline-primary m-1 p-1">
+                    <div class="bg-faded p-1 text-center">
+                        <h5>
+                            View All Transactions <br/>
+                            <a class="btn btn-secondary" href="{% url 'transaction_list' fleet.id %}">View</a>
+                        </h5>
+                    </div>
+                </div>
+                 <br/>
+            </li>
+
             <li class="nav-item">
                 <div class="card">
                     <div class="card-header">
@@ -56,12 +81,7 @@
                          </form>
                     </div>
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Manually Add Transaction</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">View All Transactions</a>
+                 <br/>
             </li>
 
         </ul>
@@ -88,7 +108,7 @@
             </thead>
             <tbody>
 
-                {% for transaction in transactions %}
+                {% for transaction in latest_transactions %}
                     <tr>
                         <td>
                             {{ transaction.registration_number }}
@@ -103,8 +123,20 @@
                             <a class="btn btn-dark">View</a>
                         </td>
                     </tr>
+                {% empty %}
+                    <tr>
+                        <td></td>
+                        <td><p>No transactions added yet</p></td>
+                        <td></td>
+                    </tr>
                 {% endfor %}
-
+                {% if latest_transactions %}
+                    <tr>
+                        <td></td>
+                        <td><p><a href="{% url 'transaction_list' fleet.id %}" class="btn btn-primary">View All</a></p></td>
+                        <td></td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
       </div>
@@ -129,7 +161,7 @@
                 <h4>
                     Average Fuel Price
                     <span class="badge rounded-pill bg-primary text-white" style="float:right">
-                        {{ avg_fuel_price }}
+                        R{{ avg_fuel_price }} Per Litre
                     </span>
                 </h4>
             </div>
@@ -140,7 +172,7 @@
                 <h4>
                     Largest Transaction
                     <span class="badge rounded-pill bg-primary text-white" style="float:right">
-                        {{ largest_transaction }}
+                        {{ largest_transaction }} L
                     </span>
                 </h4>
             </div>
@@ -151,7 +183,7 @@
                 <h4>
                     Smallest Transaction
                     <span class="badge rounded-pill bg-primary text-white" style="float:right">
-                        {{ smallest_transaction }}
+                        {{ smallest_transaction }} L
                     </span>
                 </h4>
             </div>
