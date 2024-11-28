@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "dashboard.apps.DashboardConfig",
     "vehicles.apps.VehiclesConfig",
     "fleet.apps.FleetConfig",
+    "reports.apps.ReportsConfig",
     # "django_truncate",
 ]
 
@@ -149,7 +150,7 @@ LOGGING = {
         '': {
             'handlers': ['file'],  # notice how file variable is called in handler which has been defined above
             'level': 'WARNING',
-            'propagate': True,
+            'propagate': False,
         },
     },
 }

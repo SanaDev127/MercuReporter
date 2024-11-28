@@ -1,0 +1,97 @@
+{% extends "_base.html" %}
+
+{% block title %}Detailed Supervisor Report{% endblock title %}
+
+{% block content %}
+<div class="row">
+        <div class="col col-sm-3">
+            {% if user.is_owner %}
+            <a class="btn btn-info" href="{% url 'analytics_dashboards' %}"><b>Back</b></a>
+            {% else %}
+            <a class="btn btn-info" href="{% url 'analytics_dashboards' %}"><b>Back</b></a>
+            {% endif %}
+        </div>
+        <div class="col">
+          <form action="{% url 'detailed_supervisor_report' fleet.id %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <span><b>From</b></span>
+               {{ form.start_date }}<span><b>To</b></span>
+               {{ form.end_date }}
+              <input type="submit" class="btn btn-secondary" value="GO"/>
+          </form>
+        </div>
+        <div class="col col-sm-1">
+            <p class="fs-3 text-center"></p>
+        </div>
+</div>
+<div class="row">
+    <div class="col col-sm-1"></div>
+    <div class="col">
+          <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Supervisor
+                    </th>
+                    <th>
+                        Poured (L)
+                    </th>
+                    <th>
+                        Spent (R)
+                    </th>
+                    <th>
+                        Number of Transactions
+                    </th>
+                    <th>
+                        Number of Vehicles
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for stat in supervisor_fuel_stats %}
+                    <tr>
+                        <td>
+                            {{ stat.supervisor }}
+                        </td>
+                        <td>
+                            {{ stat.poured }}
+                        </td>
+                        <td>
+                            {{ stat.spent }}
+                        </td>
+                         <td>
+                            {{ stat.num_transactions }}
+                        </td>
+                         <td>
+                            {{ stat.num_vehicles }}
+                        </td>
+
+                    </tr>
+                {% empty %}
+                <p class="text-center">No report data to show</p>
+                {% endfor %}
+
+
+            </tbody>
+        </table>
+        <br>
+              {% if supervisor_pie_plot %}
+                {{ supervisor_pie_plot|safe }}
+              {% endif %}
+
+              {% if supervisor_monthly_stats %}
+                {{ supervisor_monthly_stats|safe }}
+              {% endif %}
+
+
+
+
+    </div>
+</div>
+
+</div>
+{% endblock content %}

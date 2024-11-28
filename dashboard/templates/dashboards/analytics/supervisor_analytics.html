@@ -15,7 +15,7 @@
 <div class="container" style="margin-left: 3rem">
     <div class="row">
            <div class="col">
-               <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
+                <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
                     <button type="button" class="btn btn-warning " data-bs-toggle="dropdown" aria-expanded="false">
                        <b>
                            <span class="text-white" style="font-size:30px">General Report</span>
@@ -27,12 +27,36 @@
                       <li><a class="dropdown-item" href="#">Custom</a></li>
                     </ul>
                  </div>
+                <div style="height:2rem"></div>
+                <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
+                    <button type="button" class="btn btn-primary " data-bs-toggle="dropdown" aria-expanded="false">
+                       <b>
+                           <span class="text-white" style="font-size:30px">Brands</span>
+                       </b>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Basic</a></li>
+                      <li><a class="dropdown-item" href="#">Detailed</a></li>
+                    </ul>
+                 </div>
            </div>
            <div class="col">
                 <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
                     <button type="button" class="btn btn-info " data-bs-toggle="dropdown" aria-expanded="false">
                        <b>
-                           <span class="text-white" style="font-size:30px">Managers</span>
+                           <span class="text-white" style="font-size:30px">Supervisors</span>
+                       </b>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Basic</a></li>
+                      <li><a class="dropdown-item" href="{% url 'detailed_supervisor_report' fleet.id %}">Detailed</a></li>
+                    </ul>
+                 </div>
+                <div style="height:2rem"></div>
+                <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
+                    <button type="button" class="btn btn-primary " data-bs-toggle="dropdown" aria-expanded="false">
+                       <b>
+                           <span class="text-white" style="font-size:30px">Vehicles</span>
                        </b>
                     </button>
                     <ul class="dropdown-menu">
@@ -53,13 +77,11 @@
                       <li><a class="dropdown-item" href="#">Detailed</a></li>
                     </ul>
                  </div>
-           </div>
-
-            <div class="col">
+                <div style="height:2rem"></div>
                 <div class="btn-group" role="group" style="width: 12rem; height: 8rem">
                     <button type="button" class="btn btn-primary " data-bs-toggle="dropdown" aria-expanded="false">
                        <b>
-                           <span class="text-white" style="font-size:30px">Brands</span>
+                           <span class="text-white" style="font-size:30px">Models</span>
                        </b>
                     </button>
                     <ul class="dropdown-menu">
@@ -67,7 +89,7 @@
                       <li><a class="dropdown-item" href="#">Detailed</a></li>
                     </ul>
                  </div>
-            </div>
+           </div>
      </div>
 </div>
 

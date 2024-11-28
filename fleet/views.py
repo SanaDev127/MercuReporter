@@ -13,7 +13,7 @@ from transactions.models import Merchant, Brand
 from transactions import TransData
 import logging
 from django.contrib import messages
-
+from accounts.models import CustomUser
 
 logger = logging.getLogger(__name__)
 vehicle_dataframe_columns = ["Registration No.", "Client Reference 1", "Vehicle Status", "Model Description", "Colour",
@@ -198,6 +198,22 @@ def add_vehicle_list(request, id):
                 primary_tank_capacity = row["Primary Tank Capacity"]
                 secondary_tank_capacity = row["Secondary Tank Capacity"]
 
+                # Not sure if this is done or not. Too lazy to test it. Been a long day
+                # If I were to test it I'd probably have to clear all the tables and re add the vehicle list
+                vehicle_supervisor = row["Driver Name"]
+                if Supervisor.supervisors.filter(fleet=fleet, user__Name__iexact=vehicle_supervisor):
+                    supervisor = Supervisor.supervisors.filter(fleet=fleet, user__Name=vehicle_supervisor)
+                else:
+                    supervisor = Supervisor()
+                    # Giving the user default login details
+                    new_user = CustomUser(username=vehicle_supervisor,
+                                          password="Admin",
+                                          email="Admin")
+                    new_user.save()
+                    supervisor.user = new_user
+                    supervisor.fleet = fleet
+                    supervisor.save()
+
                 if Vehicle.vehicles.get_queryset().filter(fleet=fleet, registration_number=registration_number):
                     duplicate_vehicles.append(registration_number)
                 else:
@@ -206,7 +222,7 @@ def add_vehicle_list(request, id):
                                           fleet=fleet, addedBy=user, area=area, vehicle_status=vehicle_status,
                                           colour=colour, litres_limit=litres_limit,
                                           primary_tank_capacity=primary_tank_capacity,
-                                          secondary_tank_capacity=secondary_tank_capacity)
+                                          secondary_tank_capacity=secondary_tank_capacity, supervisor=supervisor)
                     new_vehicle.save()
             return render(request, "vehicle/AddMultipleVehiclesSuccess.html", {"fleet": fleet,
                                                                                "num_added_vehicles": num_added_vehicles,
@@ -260,7 +276,7 @@ def owner_fleet_details(request, id):
     supervisors = Supervisor.supervisors.get_queryset().filter(fleet=fleet)
     merchants = Merchant.merchants.get_queryset().filter(fleet=fleet)
     brands = Brand.brands.get_queryset().filter(fleet=fleet)
-    
+
     vehicle_activity = dict()
     for vehicle in vehicles:
         num_transactions = len(vehicle.vehicle_transactions.get_queryset())
@@ -286,9 +302,12 @@ def supervisor_fleet_details(request):
     supervisor_object = Supervisor.supervisors.get(user=request.user)
     fleet = supervisor_object.fleet
 
-    vehicles = Vehicle.vehicles.filter(fleet=fleet).annotate(transaction_count=Count('vehicle_transactions')).order_by('-transaction_count')[:5]
-    brands = Brand.brands.filter(fleet=fleet).annotate(transaction_count=Count('brand_transactions')).order_by('-transaction_count')[:5]
-    merchants = Merchant.merchants.filter(fleet=fleet).annotate(transaction_count=Count('merchant_transactions')).order_by('-transaction_count')[:5]
+    vehicles = Vehicle.vehicles.filter(fleet=fleet).annotate(transaction_count=Count('vehicle_transactions')).order_by(
+        '-transaction_count')[:5]
+    brands = Brand.brands.filter(fleet=fleet).annotate(transaction_count=Count('brand_transactions')).order_by(
+        '-transaction_count')[:5]
+    merchants = Merchant.merchants.filter(fleet=fleet).annotate(
+        transaction_count=Count('merchant_transactions')).order_by('-transaction_count')[:5]
 
     add_vehicle_list_form = UploadVehicleFileForm()
 

@@ -17,6 +17,7 @@ class Vehicle(models.Model):
     driver = models.ForeignKey(CustomUser,
                                related_name='driver_vehicles',
                                null=True,
+                               blank=True,
                                on_delete=models.SET_NULL)
     date_added = models.DateTimeField(auto_now_add=True)
     addedBy = models.ForeignKey(CustomUser,

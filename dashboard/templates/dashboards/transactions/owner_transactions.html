@@ -1,9 +1,212 @@
 {% extends "_base.html" %}
-
+{% load static %}
 {% block title %}Owner Transactions Dash{% endblock title %}
 
 {% block content %}
 
-  <p>Owner Transactions Dash</p>
+<div class="row">
+  <p></p>
+  <div class="col col-sm-3">
+    <form action="{% url 'transaction_dashboards' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ SelectFleetForm.as_p }}
+    </form>
+  </div>
+  <div class="col">
 
+  </div>
+  <div class="col">
+
+  </div>
+</div>
+
+{% if fleet %}
+ <!-- Headings -->
+    <div class="row">
+        <div class="col col-sm-3">
+
+                <p class="fs-3 text-center">{{ fleet.Name }} Transaction Activity</p>
+        </div>
+        <div class="col">
+                <p class="fs-2 text-center">Latest Transactions</p>
+        </div>
+        <div class="col">
+                <p class="fs-2 text-center">{{ latest_month }} Transaction Stats  </p>
+        </div>
+    </div>
+    <div class=" row">
+
+      <!-- Add transaction button list -->
+    <div class="col col-sm-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+               <div class="card">
+                    <div class="card-header">
+                        Transaction File Upload
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Select a file to upload</h5>
+                        <p class="card-text">New transactions will be read and saved to the system.</p>
+                        <form action="{% url 'transaction_upload' fleet.id %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ upload_transaction_file_form.as_p }}
+                            <p><input type="submit" class="btn btn-secondary" value="upload"/></p>
+                        </form>
+                    </div>
+                </div>
+                <br/>
+            </li>
+
+            <li class="nav-item">
+                <div class="card card-outline-primary m-1 p-1">
+                    <div class="bg-faded p-1 text-center">
+                        <h5>
+                            Manually Add Transaction
+                        </h5>
+                        <a class="btn btn-secondary" href="#">Add</a>
+                    </div>
+                </div>
+                 <br/>
+            </li>
+
+            <li class="nav-item">
+                <div class="card card-outline-primary m-1 p-1">
+                    <div class="bg-faded p-1 text-center">
+                        <h5>
+                            View All Transactions <br/>
+                            <a class="btn btn-secondary" href="{% url 'transaction_list' fleet.id %}">View</a>
+                        </h5>
+                    </div>
+                </div>
+                 <br/>
+            </li>
+
+            <li class="nav-item">
+                <div class="card">
+                    <div class="card-header">
+                        Scan Fuel Receipt
+                    </div>
+                    <div class="card-body">
+                         <h5 class="card-title">Select an image of a fuel receipt</h5>
+                         <p class="card-text">Transaction Data will be scanned and uploaded</p>
+                         <form action="{% url 'scan_receipt' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ scan_transaction_file_form.as_p }}
+                            <p><input type="submit" class="btn btn-secondary" value="upload"/></p>
+                         </form>
+                    </div>
+                </div>
+                 <br/>
+            </li>
+
+        </ul>
+    </div>
+
+      <!-- Latest Transaction Table -->
+    <div class="col">
+      <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Registration Number
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for transaction in latest_transactions %}
+                    <tr>
+                        <td>
+                            {{ transaction.registration_number }}
+                        </td>
+                        <td>
+                            {{ transaction.date }}
+                        </td>
+                         <td>
+                            {{ transaction.quantity }}
+                        </td>
+                        <td>
+                            <a class="btn btn-dark">View</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td></td>
+                        <td><p>No transactions added yet</p></td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                {% if latest_transactions %}
+                    <tr>
+                        <td></td>
+                        <td><p><a href="{% url 'transaction_list' fleet.id %}" class="btn btn-primary">View All</a></p></td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+      <!-- Transaction Summary List -->
+    <div class="col">
+
+        <div class="card card-outline-primary m-1 p-1">
+            <div class="bg-faded p-1">
+                <h4>
+                    Number of transactions
+                    <span class="badge rounded-pill bg-primary text-white" style="float:right">
+                        {{ num_transactions }}
+                    </span>
+                </h4>
+            </div>
+        </div>
+
+         <div class="card card-outline-primary m-1 p-1">
+            <div class="bg-faded p-1">
+                <h4>
+                    Average Fuel Price
+                    <span class="badge rounded-pill bg-primary text-white" style="float:right">
+                        R{{ avg_fuel_price }} Per Litre
+                    </span>
+                </h4>
+            </div>
+        </div>
+
+        <div class="card card-outline-primary m-1 p-1">
+            <div class="bg-faded p-1">
+                <h4>
+                    Largest Transaction
+                    <span class="badge rounded-pill bg-primary text-white" style="float:right">
+                        {{ largest_transaction }} L
+                    </span>
+                </h4>
+            </div>
+        </div>
+
+         <div class="card card-outline-primary m-1 p-1">
+            <div class="bg-faded p-1">
+                <h4>
+                    Smallest Transaction
+                    <span class="badge rounded-pill bg-primary text-white" style="float:right">
+                        {{ smallest_transaction }} L
+                    </span>
+                </h4>
+            </div>
+        </div>
+
+      <p>Progress keeping around established benchmarks</p>
+
+    </div>
+  </div>
+{% endif %}
 {% endblock content %}

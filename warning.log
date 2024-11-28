@@ -1,80 +1,23 @@
-Internal Server Error: /transactions/
+Internal Server Error: /reports/detailed_supervisor_report/16/
 Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
     response = get_response(request)
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 204, in _get_response
-    self.check_response(response, callback)
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 332, in check_response
+  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/code/reports/views.py", line 19, in detailed_supervisor_report
+    detailed_report = SupervisorReport.detailed(fleet.id, start_date, end_date)
+  File "/code/reports/models.py", line 44, in detailed
+    test_line_plot = ReportUtils.plotly_line_plot_test(
+  File "/code/reports/ReportUtils.py", line 33, in plotly_line_plot_test
+    chart = fig.to_image()
+  File "/usr/local/lib/python3.10/site-packages/plotly/basedatatypes.py", line 3766, in to_image
+    return pio.to_image(self, *args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/plotly/io/_kaleido.py", line 134, in to_image
     raise ValueError(
-ValueError: The view dashboard.views.transaction_dashboard didn't return an HttpResponse object. It returned None instead.
-Not Found: /favicon.ico
-Internal Server Error: /transactions/transaction_list/16/
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
-    response = get_response(request)
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "/code/transactions/views.py", line 176, in transaction_list
-    start_date = form.cleaned_data['start_date']
-AttributeError: 'FilterTransactionDateForm' object has no attribute 'cleaned_data'
-Internal Server Error: /transactions/transaction_list/16/
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
-    response = get_response(request)
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "/code/transactions/views.py", line 176, in transaction_list
-    start_date = form.start_date
-AttributeError: 'FilterTransactionDateForm' object has no attribute 'start_date'
-Not Found: /favicon.ico
-Internal Server Error: /transactions/
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
-    response = get_response(request)
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "/code/dashboard/views.py", line 51, in transaction_dashboard
-    current_year = latest_transaction.date.year
-AttributeError: 'QuerySet' object has no attribute 'date'
-Internal Server Error: /transactions/
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/fields/__init__.py", line 2018, in get_prep_value
-    return int(value)
-ValueError: invalid literal for int() with base 10: 'February'
+ValueError: 
+Image export using the "kaleido" engine requires the kaleido package,
+which can be installed using pip:
+    $ pip install -U kaleido
 
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
-    response = get_response(request)
-  File "/usr/local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "/code/dashboard/views.py", line 53, in transaction_dashboard
-    summary_stats = TransData.fleet_summary_stats(fleet.id, current_year, latest_month)
-  File "/code/transactions/TransData.py", line 224, in fleet_summary_stats
-    transactions_list = Transaction.transactions.filter(fleet=fleet,
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/manager.py", line 85, in manager_method
-    return getattr(self.get_queryset(), name)(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1421, in filter
-    return self._filter_or_exclude(False, args, kwargs)
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1439, in _filter_or_exclude
-    clone._filter_or_exclude_inplace(negate, args, kwargs)
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/query.py", line 1446, in _filter_or_exclude_inplace
-    self._query.add_q(Q(*args, **kwargs))
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1532, in add_q
-    clause, _ = self._add_q(q_object, self.used_aliases)
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1562, in _add_q
-    child_clause, needed_inner = self.build_filter(
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1478, in build_filter
-    condition = self.build_lookup(lookups, col, value)
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/sql/query.py", line 1303, in build_lookup
-    lookup = lookup_class(lhs, rhs)
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/lookups.py", line 27, in __init__
-    self.rhs = self.get_prep_lookup()
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/lookups.py", line 341, in get_prep_lookup
-    return super().get_prep_lookup()
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/lookups.py", line 85, in get_prep_lookup
-    return self.lhs.output_field.get_prep_value(self.rhs)
-  File "/usr/local/lib/python3.10/site-packages/django/db/models/fields/__init__.py", line 2020, in get_prep_value
-    raise e.__class__(
-ValueError: Field 'None' expected a number but got 'February'.
+Not Found: /favicon.ico
+Not Found: /favicon.ico

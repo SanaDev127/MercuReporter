@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
 
+    profile_picture = models.ImageField
+
     def is_supervisor(self):
         if self.groups.filter(name='Supervisors').exists():
             return True
@@ -84,7 +86,7 @@ class Supervisor(models.Model):
                                 on_delete=models.CASCADE)
 
     fleet = models.ForeignKey(Fleet,
-                              related_name="supervised_fleet",
+                              related_name="fleet_supervisors",
                               null=True,
                               on_delete=models.SET_NULL)
 

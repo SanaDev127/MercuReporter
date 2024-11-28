@@ -1,5 +1,7 @@
 from datetime import datetime
 import calendar
+
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
@@ -10,6 +12,7 @@ from vehicles.models import Vehicle
 from transactions.models import Transaction
 from accounts.models import Supervisor
 from transactions import TransData
+from .forms import SelectFleetForm
 
 
 def user_dashboard(request):
@@ -44,8 +47,6 @@ def transaction_dashboard(request):
 
         transaction_upload_form = UploadTransactionFileForm()
         transaction_scan_form = ScanTransactionForm()
-        # Showing stats for previous month because most likely won't be getting realtime data
-        # previous_month = calendar.month_name[datetime.now().month - 1]
         latest_transactions = Transaction.transactions.get_queryset().filter(fleet=fleet).order_by('-date')[:10]
         latest_transaction = latest_transactions[:1].get()
         current_year = latest_transaction.date.year
@@ -66,9 +67,50 @@ def transaction_dashboard(request):
                        "latest_transactions": latest_transactions,
                        })
     elif user.is_owner():
-        return render(request,
-                      'dashboards/transactions/owner_transactions.html',
-                      {'user': user})
+
+        if request.method == 'POST':
+            form = SelectFleetForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+
+                selected_fleet = cd['fleet']
+                transaction_upload_form = UploadTransactionFileForm()
+                transaction_scan_form = ScanTransactionForm()
+                select_fleet_form = SelectFleetForm()
+                latest_transactions = Transaction.transactions.get_queryset().filter(fleet=selected_fleet).order_by('-date')[:10]
+                latest_transaction = latest_transactions[:1].get()
+                current_year = latest_transaction.date.year
+                latest_month = latest_transaction.date.month
+                summary_stats = TransData.fleet_summary_stats(selected_fleet.id, current_year, latest_month)
+
+                return render(request,
+                              'dashboards/transactions/owner_transactions.html',
+                              {'user': user,
+                               "fleet": selected_fleet,
+                               'upload_transaction_file_form': transaction_upload_form,
+                               "latest_month": calendar.month_name[latest_transaction.date.month],
+                               'scan_transaction_file_form': transaction_scan_form,
+                               "num_transactions": summary_stats["num_transactions"],
+                               "avg_fuel_price": summary_stats["avg_fuel_price"],
+                               "largest_transaction": summary_stats["largest_transaction"],
+                               "smallest_transaction": summary_stats["smallest_transaction"],
+                               "latest_transactions": latest_transactions,
+                               "SelectFleetForm": select_fleet_form
+                               })
+            else:
+                return HttpResponse("Invalid form")
+
+        else:
+            form = SelectFleetForm()
+            form.fields['fleet'].queryset = Fleet.fleets.get_queryset().filter(owner=user)
+
+            return render(request,
+                          'dashboards/transactions/owner_transactions.html',
+                          {'user': user,
+                           "SelectFleetForm": form}
+                          )
+
+
 
 
 def analytics_dash(request):
@@ -78,9 +120,12 @@ def analytics_dash(request):
                       'dashboards/analytics/driver_analytics.html',
                       {'user': user})
     elif user.is_supervisor():
+        supervisor = Supervisor.supervisors.get(user=user)
+        fleet = supervisor.fleet
         return render(request,
                       'dashboards/analytics/supervisor_analytics.html',
-                      {'user': user})
+                      {'user': user,
+                       'fleet': fleet})
     elif user.is_owner():
         return render(request,
                       'dashboards/analytics/owner_analytics.html',
